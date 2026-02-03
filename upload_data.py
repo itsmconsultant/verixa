@@ -8,8 +8,8 @@ def show_upload_dashboard(conn):
 
     # Ambil daftar tabel
     try:
-        allowed_tables = ["disbursement", "deposit", "saldo_durian", "settlement"]
-        view_data = conn.client.schema("moneypay").table("v_table_list").select("*").in_("table_name", allowed_tables).execute()
+        allowed_tables = ["deposit"]
+        view_data = conn.client.schema("verixa").table("v_table_list").select("*").in_("table_name", allowed_tables).execute()
         list_tabel = [row['table_name'] for row in view_data.data]
     except Exception as e:
         st.error(f"Gagal memuat tabel: {e}")
@@ -40,13 +40,14 @@ def show_upload_dashboard(conn):
                 
                 with st.spinner('Mengunggah...'):
                     try:
-                        conn.client.schema("moneypay").table(target_table).insert(cleaned_data).execute()
+                        conn.client.schema("verixa").table(target_table).insert(cleaned_data).execute()
                         st.success("Berhasil diunggah!")
                         st.balloons()
                     except Exception as e:
                         st.error(f"Error saat upload: {e}")
         except Exception as e:
             st.error(f"File rusak atau tidak terbaca: {e}")
+
 
 
 

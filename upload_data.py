@@ -8,7 +8,7 @@ def show_upload_dashboard(conn):
 
     # Ambil daftar tabel
     try:
-        allowed_tables = ["deposit","settlement"]
+        allowed_tables = ["deposit","settlement","disbursement"]
         view_data = conn.client.schema("verixa").table("v_table_list").select("*").in_("table_name", allowed_tables).execute()
         list_tabel = [row['table_name'] for row in view_data.data]
     except Exception as e:
@@ -47,6 +47,7 @@ def show_upload_dashboard(conn):
                         st.error(f"Error saat upload: {e}")
         except Exception as e:
             st.error(f"File rusak atau tidak terbaca: {e}")
+
 
 
 

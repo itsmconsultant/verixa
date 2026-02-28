@@ -5,17 +5,31 @@ import numpy as np
 def show_upload_dashboard(conn):
 
     st.title("📤 Upload Data")
+    st.write("Pilih tabel tujuan untuk penyimpanan data dan excel sebagai sumber data.")
+    st.divider()
+
+    table_display_names = {
+        "deposit": "Data Deposit",
+        "disbursement": "Data Disbursement",
+        "saldo_durian": "Data Saldo Durian",
+        "settlement": "Data Settlement"
+    }
 
     # Ambil daftar tabel
     try:
-        allowed_tables = ["deposit","settlement","disbursement","saldo_durian"]
-        view_data = conn.client.schema("verixa").table("v_table_list").select("*").in_("table_name", allowed_tables).execute()
-        list_tabel = [row['table_name'] for row in view_data.data]
+        mapping_data = conn.client.schema("verixa").table("v_table_list").select("*").in_("table_name", allowed_tables).execute()
+        mapping_df = pd.DataFrame(mapping_data.data)
+        list_tabel = mapping_df['table_name'].tolist()
     except Exception as e:
-        st.error(f"Gagal memuat tabel: {e}")
+        st.error(f"Gagal memuat mapping tabel: {e}")
         list_tabel = []
 
-    target_table = st.selectbox("Pilih Tabel Tujuan:", list_tabel)
+    target_table = st.selectbox(
+        "Pilih Tabel Tujuan:", 
+        list_tabel,
+        format_func=lambda x: table_display_names.get(x, x)
+    )
+    
     uploaded_file = st.file_uploader("Pilih file Excel (.xlsx)", type=["xlsx"])
 
     if uploaded_file and target_table:
@@ -47,6 +61,7 @@ def show_upload_dashboard(conn):
                         st.error(f"Error saat upload: {e}")
         except Exception as e:
             st.error(f"File rusak atau tidak terbaca: {e}")
+
 
 
 

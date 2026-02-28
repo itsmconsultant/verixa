@@ -3,7 +3,7 @@ import streamlit as st
 def show_login(conn):
     # 1. SET WIDE MODE DEFAULT
     st.set_page_config(
-        page_title="Portal System",
+        page_title="Verixa Login",
         layout="centered",
         initial_sidebar_state="expanded"
     )

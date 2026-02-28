@@ -4,9 +4,10 @@ from login import show_login
 from upload_data import show_upload_dashboard
 from process_data import show_run_procedure
 from report_rekonsiliasi_transaksi_deposit_dan_settlement import show_report_deposit_settlement
-#from report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian import show_report_disbursement_durian
-#from report_detail_reversal import show_report_detail_reversal
-#from report_balance_flow import show_report_balance_flow
+from report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian import show_report_disbursement_durian
+from report_detail_reversal import show_report_detail_reversal
+from report_balance_flow import show_report_balance_flow
+from report_rekonsiliasi_transaksi_deposit_outstanding_dan_settlement import show_report_deposit_settlement_outstanding
 
 # 1. SET WIDE MODE DEFAULT
 st.set_page_config(
@@ -81,21 +82,26 @@ else:
             if st.button("📊\n\n\n\nReport Rekonsiliasi Transaksi Deposit dan Settlement", key="r1", use_container_width=True):
                 st.session_state["current_page"] = "report_rekonsiliasi_transaksi_deposit_dan_settlement"
                 st.rerun()
+        
+        with col3:
+            if st.button("📊\n\n\n\nReport Rekonsiliasi Transaksi Deposit Oustanding dan Settlement", key="r5", use_container_width=True):
+                st.session_state["current_page"] = "report_rekonsiliasi_transaksi_deposit_outstanding_dan_settlement"
+                st.rerun()
             
-        #with col4:
-            #if st.button("📊\n\n\n\nRekonsiliasi Transaksi Disbursement dan Saldo Durian", key="r2", use_container_width=True):
-                #st.session_state["current_page"] = "report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian"
-                #st.rerun()
+        with col4:
+            if st.button("📊\n\n\n\nRekonsiliasi Transaksi Disbursement dan Saldo Durian", key="r2", use_container_width=True):
+                st.session_state["current_page"] = "report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian"
+                st.rerun()
 
-        #with col3:
-            #if st.button("📊\n\n\n\nReport Detail Reversal", key="r3", use_container_width=True):
-                #st.session_state["current_page"] = "report_detail_reversal"
-                #st.rerun()
+        with col3:
+            if st.button("📊\n\n\n\nReport Detail Reversal", key="r3", use_container_width=True):
+                st.session_state["current_page"] = "report_detail_reversal"
+                st.rerun()
                 
-        #with col4:
-            #if st.button("📊\n\n\n\nReport Balance Flow", key="r4", use_container_width=True):
-                #st.session_state["current_page"] = "report_balance_flow"
-                #st.rerun()
+        with col4:
+            if st.button("📊\n\n\n\nReport Balance Flow", key="r4", use_container_width=True):
+                st.session_state["current_page"] = "report_balance_flow"
+                st.rerun()
 
     elif st.session_state["current_page"] == "upload":
         # Menampilkan halaman upload dari file upload_data.py
@@ -107,11 +113,14 @@ else:
     elif st.session_state["current_page"] == "report_rekonsiliasi_transaksi_deposit_dan_settlement":
        show_report_deposit_settlement(conn)
 
-    #elif st.session_state["current_page"] == "report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian":
-    #    show_report_disbursement_durian(conn)
+    elif st.session_state["current_page"] == "report_rekonsiliasi_transaksi_deposit_outstanding_dan_settlement":
+       show_report_deposit_settlement_outstanding(conn)
 
-    # elif st.session_state["current_page"] == "report_detail_reversal":
-    #     show_report_detail_reversal(conn)
+    elif st.session_state["current_page"] == "report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian":
+       show_report_disbursement_durian(conn)
 
-    # elif st.session_state["current_page"] == "report_balance_flow":
-    #     show_report_balance_flow(conn)
+    elif st.session_state["current_page"] == "report_detail_reversal":
+        show_report_detail_reversal(conn)
+
+    elif st.session_state["current_page"] == "report_balance_flow":
+        show_report_balance_flow(conn)

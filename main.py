@@ -16,27 +16,25 @@ st.set_page_config(
 )
 
 # 3. KONEKSI & INISIALISASI SESSION
-conn = st.connection("supabase", type=SupabaseConnection)
+conn = st.connection("supabase", type=SupabaseConnection,ttl=0)
 
 if "authenticated" not in st.session_state:
-    try:
-        # Mencoba mengambil sesi yang tersimpan di browser
-        session = conn.client.auth.get_session()
-        if session:
-            st.session_state["authenticated"] = True
-            st.session_state["user_email"] = session.user.email
-        else:
-            st.session_state["authenticated"] = False
-    except:
-        st.session_state["authenticated"] = False
+    st.session_state["authenticated"] = False
 
 if "current_page" not in st.session_state:
     st.session_state["current_page"] = "menu"
 
 # --- LOGIKA NAVIGASI ---
 if not st.session_state["authenticated"]:
+    st.session_state["has_refreshed"] = False
     show_login(conn)
 else:
+    if not st.session_state.get("has_refreshed", False):
+        st.session_state["has_refreshed"] = True
+        # Membersihkan resource cache sebelum rerun untuk memicu koneksi websocket baru
+        st.cache_resource.clear()
+        st.rerun()
+        
     # SIDEBAR (Navigasi Samping)
     with st.sidebar:
         st.title("Informasi Akun")
@@ -46,8 +44,13 @@ else:
             st.session_state["current_page"] = "menu"
             st.rerun()
         if st.button("🚪 Logout", key="side_logout", use_container_width=True):
-            conn.client.auth.sign_out()
-            st.session_state["authenticated"] = False
+            try:
+                conn.client.auth.sign_out()
+            except:
+                pass
+            # Bersihkan semua state secara total
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
             st.rerun()
 
     # KONTEN UTAMA

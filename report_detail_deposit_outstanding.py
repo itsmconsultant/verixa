@@ -3,8 +3,8 @@ import pandas as pd
 import datetime
 import io
 
-def show_report_deposit_settlement_outstanding(conn):
-    st.title("📊 Rekonsiliasi Transaksi Deposit Outstanding dan Settlement")
+def show_report_detail_deposit_outstanding(conn):
+    st.title("📊 Detail Deposit Outstanding")
     st.divider()
 
     # --- 1. Input Parameter Tanggal ---

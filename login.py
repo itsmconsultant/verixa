@@ -8,7 +8,7 @@ def show_login(conn):
         initial_sidebar_state="expanded"
     )
     
-    st.title("🔐 Login ke Sistem")
+    st.title("🔐 Verixa Login")
     
     with st.form("login_form"):
         email = st.text_input("Email")

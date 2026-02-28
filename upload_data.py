@@ -17,6 +17,7 @@ def show_upload_dashboard(conn):
 
     # Ambil daftar tabel
     try:
+        allowed_tables = ["deposit","settlement","disbursement","saldo_durian"]
         mapping_data = conn.client.schema("verixa").table("v_table_list").select("*").in_("table_name", allowed_tables).execute()
         mapping_df = pd.DataFrame(mapping_data.data)
         list_tabel = mapping_df['table_name'].tolist()
@@ -61,6 +62,7 @@ def show_upload_dashboard(conn):
                         st.error(f"Error saat upload: {e}")
         except Exception as e:
             st.error(f"File rusak atau tidak terbaca: {e}")
+
 
 
 

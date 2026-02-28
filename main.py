@@ -8,6 +8,7 @@ from report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian import show_rep
 from report_detail_reversal import show_report_detail_reversal
 from report_balance_flow import show_report_balance_flow
 from report_rekonsiliasi_transaksi_deposit_outstanding_dan_settlement import show_report_deposit_settlement_outstanding
+from report_detail_deposit_outstanding import show_report_detail_deposit_outstanding
 
 # 1. SET WIDE MODE DEFAULT
 st.set_page_config(
@@ -87,6 +88,11 @@ else:
             if st.button("📊\n\n\n\nReport Rekonsiliasi Transaksi Deposit Oustanding dan Settlement", key="r5", use_container_width=True):
                 st.session_state["current_page"] = "report_rekonsiliasi_transaksi_deposit_outstanding_dan_settlement"
                 st.rerun()
+        
+        with col3:
+            if st.button("📊\n\n\n\nReport Detail Deposit Outstanding", key="r6", use_container_width=True):
+                st.session_state["current_page"] = "report_detail_deposit_oustanding"
+                st.rerun()
             
         with col3:
             if st.button("📊\n\n\n\nRekonsiliasi Transaksi Disbursement dan Saldo Durian", key="r2", use_container_width=True):
@@ -115,6 +121,9 @@ else:
 
     elif st.session_state["current_page"] == "report_rekonsiliasi_transaksi_deposit_outstanding_dan_settlement":
        show_report_deposit_settlement_outstanding(conn)
+
+    elif st.session_state["current_page"] == "report_detail_deposit_outstanding":
+       show_report_detail_deposit_outstanding(conn)
 
     elif st.session_state["current_page"] == "report_rekonsiliasi_transaksi_disbursement_dan_saldo_durian":
        show_report_disbursement_durian(conn)

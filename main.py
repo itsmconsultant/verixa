@@ -91,7 +91,7 @@ else:
         
         with col3:
             if st.button("📊\n\n\n\nReport Detail Deposit Outstanding", key="r6", use_container_width=True):
-                st.session_state["current_page"] = "report_detail_deposit_oustanding"
+                st.session_state["current_page"] = "report_detail_deposit_outstanding"
                 st.rerun()
             
         with col4:

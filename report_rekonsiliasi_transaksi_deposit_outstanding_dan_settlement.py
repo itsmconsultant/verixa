@@ -4,7 +4,7 @@ import datetime
 import io
 
 def show_report_deposit_settlement_outstanding(conn):
-    st.title("📊 Rekonsiliasi Transaksi Deposit dan Settlement")
+    st.title("📊 Rekonsiliasi Transaksi Deposit Outstanding dan Settlement")
     st.divider()
 
     # --- 1. Input Parameter Tanggal ---

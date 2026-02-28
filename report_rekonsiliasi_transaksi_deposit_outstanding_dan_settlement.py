@@ -18,7 +18,7 @@ def show_report_deposit_settlement_outstanding(conn):
 
     # --- 2. Ambil Distinct Client ID berdasarkan Tanggal ---
     try:
-        client_response = conn.client.schema("verixa").table("summary_deposit") \
+        client_response = conn.client.schema("verixa").table("summary_deposit_outstanding") \
             .select("client_id") \
             .eq("tanggal_data", tanggal_str) \
             .execute()

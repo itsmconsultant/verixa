@@ -6,3 +6,4 @@ supabase
 sqlalchemy
 psycopg2-binary
 xlsxwriter
+extra-streamlit-components

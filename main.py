@@ -10,7 +10,7 @@ from upload_data import show_upload_dashboard
 
 # 1. SET WIDE MODE DEFAULT
 st.set_page_config(
-    page_title="Portal System", 
+    page_title="Verixa Portal System", 
     layout="wide", 
     initial_sidebar_state="expanded"
 )

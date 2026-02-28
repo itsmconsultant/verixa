@@ -64,7 +64,7 @@ def show_report_deposit_settlement(conn):
             try:
                 # Membangun query dasar
                 query = conn.client.schema("verixa").table("summary_deposit") \
-                    .select("merchant, tanggal_data, keterangan, jumlah_transaksi, jumlah_transaksi_sesuai_rate, penambahan_rupiah, pengurangan_rupiah, rekonsiliasi_jumlah_transaksi, rekonsiliasi_rupiah, rekonsiliasi_tambah_kurang, saldo_rekonsiliasi_rupiah") \
+                    .select("client_id, merchant, tanggal_data, keterangan, jumlah_transaksi, jumlah_transaksi_sesuai_rate, penambahan_rupiah, pengurangan_rupiah, rekonsiliasi_jumlah_transaksi, rekonsiliasi_rupiah, rekonsiliasi_tambah_kurang, saldo_rekonsiliasi_rupiah") \
                     .eq("tanggal_data", tanggal_str)
 
                 # Jika user TIDAK memilih "Pilih Semua", tambahkan filter spesifik client_id
@@ -72,7 +72,7 @@ def show_report_deposit_settlement(conn):
                     query = query.eq("client_id", selected_client)
 
                 # Eksekusi query dengan urutan
-                response = query.order("urutan", desc=False).execute()
+                response = query.order("client_id").order("urutan", desc=False).execute()
 
                 if response.data:
                     df = pd.DataFrame(response.data)

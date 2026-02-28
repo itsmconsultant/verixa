@@ -90,7 +90,7 @@ def show_report_deposit_settlement(conn):
                     st.download_button(
                         label="📥 Download Excel (.xlsx)",
                         data=download_data,
-                        file_name=f"Rekon_{file_suffix}_{tanggal_str}.xlsx",
+                        file_name=f"Rekonsiliasi Transaksi Deposit dan Settlement {tanggal_str}.xlsx",
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                     )
                     

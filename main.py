@@ -140,5 +140,5 @@ else:
     elif st.session_state["current_page"] == "report_balance_flow":
         show_report_balance_flow(conn)
         
-     elif st.session_state["current_page"] == "delete":
+    elif st.session_state["current_page"] == "delete":
         show_delete_data(conn)

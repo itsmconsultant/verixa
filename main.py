@@ -1,4 +1,4 @@
- import streamlit as st
+import streamlit as st
 from st_supabase_connection import SupabaseConnection
 from login import show_login
 from upload_data import show_upload_dashboard

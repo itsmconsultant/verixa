@@ -18,8 +18,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 3. KONEKSI & INISIALISASI SESSION
-conn = st.connection("supabase", type=SupabaseConnection,ttl=0)
+# 2. KONEKSI & INISIALISASI SESSION
+# Menggunakan ttl=0 memastikan koneksi tidak tersimpan di cache yang sudah mati saat wake up
+conn = st.connection("supabase", type=SupabaseConnection, ttl=0)
 
 if "authenticated" not in st.session_state:
     st.session_state["authenticated"] = False
@@ -29,12 +30,25 @@ if "current_page" not in st.session_state:
 
 # --- LOGIKA NAVIGASI ---
 if not st.session_state["authenticated"]:
+    # Reset flag refresh saat belum login
     st.session_state["has_refreshed"] = False
     show_login(conn)
 else:
+    # --- LOGIKA STABILITAS WAKE UP / REFRESH ---
     if not st.session_state.get("has_refreshed", False):
         st.session_state["has_refreshed"] = True
-        # Membersihkan resource cache sebelum rerun untuk memicu koneksi websocket baru
+        # Membersihkan resource cache untuk memicu koneksi websocket yang benar-benar baru
+        st.cache_resource.clear()
+        st.cache_data.clear()
+        st.rerun()
+
+    # --- VALIDASI KONEKSI AKTIF ---
+    # Melakukan kueri ringan untuk memastikan pipa data ke Supabase sudah "hangat"
+    # Ini mencegah AxiosError saat user langsung melakukan upload setelah wake up
+    try:
+        conn.query("SELECT 1", count="exactly").execute()
+    except Exception:
+        # Jika gagal (stale session), paksa rerun untuk re-inisialisasi
         st.cache_resource.clear()
         st.rerun()
         
@@ -62,7 +76,6 @@ else:
         st.write("Harap upload dan proses data terlebih dahulu sebelum menarik report!")
         st.divider()
         
-        # Grid Menu menggunakan tombol standar Streamlit
         col1, col2 = st.columns(2)
         
         with col1:
@@ -70,7 +83,7 @@ else:
                 st.session_state["current_page"] = "upload"
                 st.rerun()
         
-        with col2: # Misalnya kotak kedua
+        with col2: 
             if st.button("⚙️\n\n\n\nProcess Data", key="card_proc", use_container_width=True):
                 st.session_state["current_page"] = "procedure"
                 st.rerun()
@@ -116,7 +129,6 @@ else:
                 st.rerun()
 
     elif st.session_state["current_page"] == "upload":
-        # Menampilkan halaman upload dari file upload_data.py
         show_upload_dashboard(conn)
         
     elif st.session_state["current_page"] == "procedure":
